@@ -5,7 +5,7 @@ export default {
   components: {Grille},
   data () {
     return {
-      word: 'creation',
+      word: 'plusieurs',
       gameState: 'playing' // playing, lost, won
     }
   },
