@@ -26,7 +26,7 @@ export default {
         return str;
     },
     async isWord(word) {
-        const response = await fetch('/public/gutenberg.txt');
+        const response = await fetch('/src/data/gutenberg.txt');
         const text = await response.text();
         return this.removeAccents(text).includes(word);
     }
