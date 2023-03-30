@@ -1,0 +1,1 @@
+- Corriger l'erreur si une lettre est trouvé alors que plus loin elle est bien placé
