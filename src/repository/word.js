@@ -1,3 +1,5 @@
+import json from '../data/data.json'
+
 export default {
     removeAccents(str) {
         const accents = [
@@ -26,8 +28,12 @@ export default {
         return str;
     },
     async isWord(word) {
-        const response = await fetch('/src/data/gutenberg.txt');
-        const text = await response.text();
-        return this.removeAccents(text).includes(word);
-    }
+        const words = json.words
+        const wordsWithoutAccents = words.map(word => this.removeAccents(word))
+        if (wordsWithoutAccents.includes(word)) {
+            return true
+        } else {
+            return false
+        }
+    }      
 }
