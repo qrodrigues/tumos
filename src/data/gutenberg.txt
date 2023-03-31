@@ -42537,7 +42537,6 @@ candeurs
 candi
 candidat
 candidate
-candidater
 candidates
 candidats
 candidature
@@ -43948,8 +43947,8 @@ caracoliez
 caracolions
 caracolons
 caracos
-caractere
-caracteres
+caractère
+caractères
 caractériel
 caractérielle
 caractérielles
