@@ -14,12 +14,15 @@ export default {
     gameState: {
       type: String,
       default: 'playing'
+    },
+    actualLine: {
+      type: Number,
+      default: 0
     }
   },
   data() {
     return {
       foundLetters: [],
-      actualLine: 0,
       actualCase: 0,
       grille: {
         lignes: []
@@ -54,7 +57,7 @@ export default {
               // Clear des données et passage au suivant
               this.typedLetters = []
               this.actualCase = 0
-              this.actualLine++
+              this.$emit('actualLineIncrease')
               this.typedLetters = this.foundLetters.slice()
               var findEmpty = false
               for (let l = 0; l < this.typedLetters.length && !findEmpty; l++) {
@@ -70,7 +73,7 @@ export default {
                 }, 500);
             }
             // On vérifie que ce soit pas la dernière ligne
-            if (this.actualLine >= this.nbLine) {
+            if (this.actualLine >= this.nbLine - 1) {
               this.$emit('updateGameState', 'lost')
             }
           } else {
@@ -81,7 +84,7 @@ export default {
           }
         }
         if (key === 'BACKSPACE') {
-          if (this.actualCase > 0) {
+          if (this.actualCase > 1) {
             this.actualCase--
             this.typedLetters[this.actualCase] = ""
           }
