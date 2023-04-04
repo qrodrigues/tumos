@@ -1,0 +1,2 @@
+- Lorsque l'on trouve une lettre bien placé, dans une autre ligne, si la lettre a été trouvé en orange avant, alors elle sera plus affichée
+- Supprimer le passage à la lettre suivante automatiquement

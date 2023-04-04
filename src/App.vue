@@ -1,92 +1,69 @@
-<script>
-import Grille from './components/Grille.vue'
-
-export default {
-  components: {Grille},
-  data () {
-    return {
-      word: 'equitable',
-      gameState: 'playing', // playing, lost, won
-      actualLine: 0
-    }
-  },
-  methods: {
-    onUpdateGameState (newState) {
-      this.gameState = newState
-    },
-    onActualLineIncrease () {
-      this.actualLine++
-    }
-  },
-  mounted () {
-    this.word = this.word.toUpperCase()
-  }
-}
-</script>
-
 <template>
-  <div class="logo">
-    <img src="/logo.svg" class="logo">
-  </div>
-  <div v-if="this.gameState === 'won'" class="end won">
-    <p class="subtitle">VICTOIRE</p>
-    <p class="showWord">Le mot était : <span>{{ word }}</span></p>
-    <p>Vous avez trouvé le mot en {{ actualLine + 1 }} {{ actualLine + 1 > 1 ? 'lignes' : 'ligne' }} !<br>Revenez demain pour le nouveau mot du jour !</p>
-  </div>
-  <div v-if="this.gameState === 'lost'" class="end lost">
-    <p class="subtitle">DEFAITE</p>
-    <p class="showWord">Le mot était : <span>{{ word }}</span></p>
-    <p>Vous n'avez pas réussi à trouver le mot !<br>Revenez demain pour une nouvelle chance avec un nouveau mot.</p>
-  </div>
-  <Grille v-if="this.gameState === 'playing'" :actualLine="actualLine" :nbLine="6" :word="word" :gameState="'playing'" @updateGameState="onUpdateGameState" @actualLineIncrease="onActualLineIncrease"></Grille>
-  <!-- <div v-if="this.gameState === 'playing'" class="keyboard"></div> -->
+    <div class="app">
+        <div class="logo">
+            <router-link to="/">
+                <img to="accueil" src="/logo.svg" class="logo">
+            </router-link>
+        </div>
+        <nav v-if="this.$route.path === '/'">
+            <router-link to="/quotidien">Mot du jour</router-link>
+        </nav>
+        <router-view v-slot="{ Component }">
+            <component :is="Component" />
+        </router-view>
+    </div>
 </template>
-
-<style scoped>
-  h1 {
-    text-align: center;
-  }
-
-  .logo {
+  
+  
+<script>
+export default {
+    name: 'App',
+};
+</script>
+<style>
+.logo {
     display: flex;
     justify-content: center;
     user-select: none;
     margin: 20px 0
-  }
+}
 
-  .keyboard {
-    width: 500px;
-    height: 200px;
-    border: 1px solid white;
-    margin: 0 auto;
-    margin-top: 50px
-  }
+nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
-  .end {
-    width: 100%;
-    border: 5px solid #A06B9A;
-    border-radius: 10px;
-    margin: 10px;
-  }
-
-  .end .subtitle {
-    color: white;
-    font-size: 24px;
-    margin: 0;
-    text-decoration: underline;
-  }
-
-  .end p {
+nav a {
+    text-decoration: none;
     text-align: center;
-  }
-  
-  .showWord {
-    margin: 0;
-    color: white;
-  }
+    font-size: 32px;
+    transition: .5s;
+    background-color: white;
+    border-radius: 5px;
+    color: #347670;
+    -webkit-box-shadow: 0px 8px 0px 0px #323031;
+    box-shadow: 0px 8px 0px 0px #323031;
+    margin-bottom: 20px;
+    width: 300px;
+}
 
-  .showWord span {
-    color: orange;
-    font-weight: bold;
-  }
+nav a:hover {
+    color: white;
+    background-color: #A06B9A;
+    -webkit-box-shadow: 0px 3px 0px 0px #323031;
+    box-shadow: 0px 3px 0px 0px #323031;
+    margin-top: 5px;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.5s;
+}
+
+.fade-enter,
+.fade-leave-to,
+.view.fade-leave-active {
+    opacity: 0;
+}
 </style>
