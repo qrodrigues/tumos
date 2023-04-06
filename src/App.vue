@@ -1,5 +1,12 @@
 <template>
   <div class="app">
+    <router-link to="/">
+    <div class="homeButton" v-if="this.$route.path != '/'">
+        <font-awesome-icon :icon="['fas', 'house']" />
+        <span>Accueil</span>
+      </div>
+    </router-link>
+
     <div class="logo">
       <router-link to="/">
         <img to="accueil" src="/logo.svg" class="logo">
@@ -7,18 +14,31 @@
     </div>
     <div v-if="this.$route.path === '/'">
       <nav>
-        <router-link to="/quotidien">Mot du jour</router-link>
-        <router-link to="/horaire">Mot de l'heure</router-link>
-        <router-link to="/minute">Mot de la minute</router-link>
+        <div class="navElement">
+          <router-link to="/quotidien">Mot du jour</router-link>
+        </div>
+        <div class="navElement">
+          <router-link to="/horaire">Mot de l'heure</router-link>
+        </div>
+        <div class="navElement">
+          <router-link to="/minute">Mot de la minute</router-link>
+        </div>
       </nav>
       <div class="clickableButtons">
         <div class="buttons">
-          <div class="button">Règles</div>
-          <div class="button">Paramètres</div>
-          <div class="button">Langues</div>
+          <div class="buttonContainer">
+            <div class="button" @click="rules = true">Règles</div>
+          </div>
+          <div class="buttonContainer">
+            <div class="button">Paramètres</div>
+          </div>
+          <div class="buttonContainer">
+            <div class="button">Langues</div>
+          </div>
         </div>
       </div>
     </div>
+    <Rules class="rules" v-if="rules" @clickClose="onClickCloseRules" />
     <router-view v-slot="{ Component }">
       <component :is="Component" />
     </router-view>
@@ -27,8 +47,21 @@
   
   
 <script>
+import Rules from './components/Rules.vue'
+
 export default {
   name: 'App',
+  components: { Rules },
+  data() {
+    return {
+      rules: false
+    }
+  },
+  methods: {
+    onClickCloseRules() {
+      this.rules = false
+    }
+  }
 };
 </script>
 <style>
@@ -46,11 +79,24 @@ nav {
   height: 500px;
 }
 
+nav .navElement {
+  width: 300px;
+  display: flex;
+  justify-content: center;
+  height: 55px;
+  margin-top: 20px;
+}
+
+
+nav .navElement:hover {
+  cursor: pointer;
+}
+
 nav a {
   text-decoration: none;
   text-align: center;
   font-size: 32px;
-  transition: .3s;
+  transition: .1s;
   background-color: white;
   border-radius: 5px;
   color: #347670;
@@ -58,9 +104,10 @@ nav a {
   box-shadow: 0px 8px 0px 0px #323031;
   margin-bottom: 20px;
   width: 300px;
+  height: 50px;
 }
 
-nav a:hover {
+nav .navElement:hover a {
   color: white;
   background-color: #A06B9A;
   -webkit-box-shadow: 0px 3px 0px 0px #323031;
@@ -71,6 +118,15 @@ nav a:hover {
 .clickableButtons {
   display: flex;
   justify-content: center;
+}
+
+
+.buttonContainer {
+  height: 55px;
+}
+
+.buttonContainer:hover {
+  cursor: pointer;
 }
 
 .buttons {
@@ -88,12 +144,12 @@ nav a:hover {
   align-items: center;
   -webkit-box-shadow: 0px 8px 0px 0px #323031;
   box-shadow: 0px 8px 0px 0px #323031;
-  transition: .3s;
+  transition: .1s;
   padding-right: 10px;
   padding-left: 10px;
 }
 
-.button:hover {
+.buttonContainer:hover .button {
   -webkit-box-shadow: 0px 3px 0px 0px #323031;
   box-shadow: 0px 3px 0px 0px #323031;
   margin-top: 5px;
@@ -101,14 +157,40 @@ nav a:hover {
   background-color: #A06B9A;
 }
 
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s;
+.rules {
+  position: absolute;
+  top: 50px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
-.fade-enter,
-.fade-leave-to,
-.view.fade-leave-active {
-  opacity: 0;
+.homeButton {
+  position: absolute;
+  left: 60px;
+  top: 40px;
+  width: 75px;
+  height: 75px;
+  border-radius: 20px;
+  color: white;
+  font-size: 52px;
+  transition: .1s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.homeButton span{
+  font-size: 30px;
+  transition: .1s;
+}
+
+.homeButton:hover {
+  font-size: 60px;
+  cursor: pointer;
+}
+
+.homeButton:hover span {
+  font-size: 34px;
 }
 </style>

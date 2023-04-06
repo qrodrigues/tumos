@@ -198,8 +198,6 @@ export default {
         <div v-if="this.actualLine === i - 1 && this.foundLetters[j - 1] === this.typedLetters[j - 1] && this.foundLetters[j - 1] != '' && this.actualCase != j - 1" class="letter atPosition">{{ this.foundLetters[j - 1] }}</div>
         <div v-else-if="this.actualLine === i - 1 && this.actualCase === j - 1" class="cursor">_</div>
         <div v-else-if="this.actualLine === i - 1 && this.actualCase > j - 1" class="letter">{{ this.typedLetters[j - 1] }}</div>
-        <!-- <div v-else-if="this.actualLine === i - 1 && this.typedLetters[this.actualCase] != ''" class="letter">{{ this.typedLetters[j - 1] }}</div>         A SUPPRIMER sans doute-->
-        <!-- <p v-else-if="this.actualLine === i - 1">.</p> -->
       </div>
     </div>
   </div>
