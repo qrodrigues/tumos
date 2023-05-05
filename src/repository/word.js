@@ -1,39 +1,34 @@
-import json from '../data/data.json'
+import axios from 'axios'
+
+const url = process.env.API_URL || 'http://localhost:3000'
 
 export default {
-    removeAccents(str) {
-        const accents = [
-            { from: "à", to: "a" },
-            { from: "á", to: "a" },
-            { from: "â", to: "a" },
-            { from: "ä", to: "a" },
-            { from: "ç", to: "c" },
-            { from: "è", to: "e" },
-            { from: "é", to: "e" },
-            { from: "ê", to: "e" },
-            { from: "ë", to: "e" },
-            { from: "î", to: "i" },
-            { from: "ï", to: "i" },
-            { from: "ô", to: "o" },
-            { from: "ö", to: "o" },
-            { from: "ù", to: "u" },
-            { from: "ú", to: "u" },
-            { from: "û", to: "u" },
-            { from: "ü", to: "u" },
-            { from: "ÿ", to: "y" },
-        ];
-        for (let i = 0; i < accents.length; i++) {
-            str = str.replace(new RegExp(accents[i].from, "g"), accents[i].to);
-        }
-        return str;
+    async isWord(word, size, firstLetter) {
+        const response = await axios.get(url + '/words/'+size+'/'+firstLetter);
+        return response.data.words.includes(word);
     },
-    async isWord(word) {
-        const words = json.words
-        const wordsWithoutAccents = words.map(word => this.removeAccents(word))
-        if (wordsWithoutAccents.includes(word)) {
-            return true
-        } else {
-            return false
-        }
-    }      
+    async getDailyWord() {
+        const response = await axios.get(url + '/words/daily');
+        return response.data.word;
+    },
+    async getHourlyWord() {
+        const response = await axios.get(url + '/words/hourly');
+        return response.data.word;
+    },
+    async getMinutelyWord() {
+        const response = await axios.get(url + '/words/minutely');
+        return response.data.word;
+    },
+    async getDailyDate() {
+        const response = await axios.get(url + '/words/daily/time');
+        return response.data.time;
+    },
+    async getHourlyDate() {
+        const response = await axios.get(url + '/words/hourly/time');
+        return response.data.time;
+    },
+    async getMinutelyDate() {
+        const response = await axios.get(url + '/words/minutely/time');
+        return response.data.time;
+    }
 }

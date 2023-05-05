@@ -1,13 +1,18 @@
 <script>
 import Grille from '../components/Grille.vue'
+import wordRepository from '../repository/word';
+import Timer from '../components/Timer.vue';
 
 export default {
-  components: {Grille},
+  components: {Grille, Timer},
   data () {
     return {
-      word: 'semeuse',
+      word: '',
       gameState: 'playing', // playing, lost, won
-      actualLine: 0
+      actualLine: 0,
+      loaded: false,
+      endDate: null,
+      isGrilleReset: true
     }
   },
   methods: {
@@ -16,16 +21,26 @@ export default {
     },
     onActualLineIncrease () {
       this.actualLine++
+    },
+    async onEndTime () {
+      window.location.reload();
+    },
+    onResetGrille () {
+      this.isGrilleReset = true
     }
   },
-  mounted () {
+  async mounted () {
+    this.word = await wordRepository.getMinutelyWord()
     this.word = this.word.toUpperCase()
+    this.loaded = true
+    this.endDate = await wordRepository.getMinutelyDate()
   }
 }
 </script>
 
 <template>
   <div>
+    <Timer :endDate="new Date(new Date(this.endDate).getTime() + 60 * 1000)" @endtime="onEndTime" />
     <div v-if="this.gameState === 'won'" class="end won">
       <p class="subtitle">VICTOIRE</p>
       <p class="showWord">Le mot était : <span>{{ word }}</span></p>
@@ -36,7 +51,7 @@ export default {
       <p class="showWord">Le mot était : <span>{{ word }}</span></p>
       <p>Vous n'avez pas réussi à trouver le mot !<br>Revenez demain pour une nouvelle chance avec un nouveau mot.</p>
     </div>
-    <Grille v-if="this.gameState === 'playing'" :actualLine="actualLine" :nbLine="6" :word="word" :gameState="'playing'" @updateGameState="onUpdateGameState" @actualLineIncrease="onActualLineIncrease"></Grille>
+    <Grille v-if="this.gameState === 'playing' && loaded" :actualLine="actualLine" :nbLine="6" :word="word" :gameState="'playing'" @updateGameState="onUpdateGameState" @actualLineIncrease="onActualLineIncrease" :isGrilleReset="isGrilleReset" @resetGrille="onResetGrille"></Grille>
     <!-- <div v-if="this.gameState === 'playing'" class="keyboard"></div> -->
   </div>
 </template>
@@ -54,8 +69,13 @@ export default {
     margin-top: 50px
   }
 
+  .end-container {
+    display: flex;
+    justify-content: center;
+  }
+
   .end {
-    width: 100%;
+    width: 30%;
     border: 5px solid #A06B9A;
     border-radius: 10px;
     margin: 10px;

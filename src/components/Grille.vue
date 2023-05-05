@@ -18,6 +18,9 @@ export default {
     actualLine: {
       type: Number,
       default: 0
+    },
+    isGrilleReset: {
+      type: Boolean
     }
   },
   data() {
@@ -95,7 +98,6 @@ export default {
             if (this.typedLetters[this.actualCase + 1] != this.foundLetters[this.actualCase + 1] || this.typedLetters[this.actualCase + 1] == "" || this.actualCase + 1 === this.word.length) {
             this.actualCase++
           } else {
-            console.log('ici')
             var findEmptyLetter = false
             const nbLetterLeft = this.word.length - (this.actualCase + 1)
             for (let i = 0; i < nbLetterLeft && !findEmptyLetter; i++) {
@@ -119,7 +121,7 @@ export default {
       this.foundLetters[index] = letter
     },
     async checkWord(word) {
-      const result = await wordRepository.isWord(word);
+      const result = await wordRepository.isWord(word, this.word.length, this.word[0]);
       return result;
     },
     letterInWord (letter, position, ligne) {
@@ -156,6 +158,9 @@ export default {
         }
       }
       return false
+    },
+    onResetGrid () {
+      console.log('reset grid');
     }
   },
   mounted() {
@@ -163,7 +168,9 @@ export default {
     for (let i = 0; i < this.word.length; i++) {
       this.foundLetters[i] = ""
     }
-    this.foundLetters[0] = this.word[0].toUpperCase()
+    if (this.word.length > 0) {
+      this.foundLetters[0] = this.word[0].toUpperCase()
+    }
     for (let i = 0; i < this.nbLine; i++) {
       this.grille.lignes.push({
         lettres: []
@@ -228,6 +235,7 @@ export default {
   align-items: center;
   display: flex;
   flex-direction: column;
+  width: min-content;
 }
 
 .inWord {
@@ -292,31 +300,30 @@ export default {
 
 @keyframes shake {
   0% {
-    margin-right: 0;
-    margin-top: 0
+    transform: translateX(0);
+    transform: translateY(0);
   }
-
+  
   20% {
-    margin-right: 2px;
-    margin-top: 2px
+    transform: translateX(2px);
+    transform: translateY(2px);
+  }
+  
+  40% {
+    transform: translateX(-2px);
+    transform: translateY(-2px);
   }
 
   40% {
-    margin-right: -2px;
-    margin-top: -2px
-  }
-
-  40% {
-    margin-right: 2px;
-    margin-top: -2px
+    transform: translateX(2px);
+    transform: translateY(2px);
   }
   80% {
-    margin-right: -2px;
-    margin-top: 2px
+    transform: translateX(-2px);
   }
   100% {
-    margin-right: 0;
-    margin-top: 0
+    transform: translateX(0);
+    transform: translateY(0);
   }
   
 }

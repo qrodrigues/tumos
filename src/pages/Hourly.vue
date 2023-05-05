@@ -1,13 +1,17 @@
 <script>
 import Grille from '../components/Grille.vue'
+import wordRepository from '../repository/word';
+import Timer from '../components/Timer.vue';
 
 export default {
-  components: {Grille},
+  components: {Grille, Timer},
   data () {
     return {
-      word: 'meler',
+      word: '',
       gameState: 'playing', // playing, lost, won
-      actualLine: 0
+      actualLine: 0,
+      loaded: false,
+      endDate: null
     }
   },
   methods: {
@@ -18,25 +22,31 @@ export default {
       this.actualLine++
     }
   },
-  mounted () {
+  async mounted () {
+    this.word = await wordRepository.getHourlyWord()
     this.word = this.word.toUpperCase()
+    this.loaded = true
+    this.endDate = await wordRepository.getHourlyDate()
   }
 }
 </script>
 
 <template>
   <div>
-    <div v-if="this.gameState === 'won'" class="end won">
-      <p class="subtitle">VICTOIRE</p>
-      <p class="showWord">Le mot était : <span>{{ word }}</span></p>
-      <p>Vous avez trouvé le mot en {{ actualLine + 1 }} {{ actualLine + 1 > 1 ? 'lignes' : 'ligne' }} !<br>Revenez demain pour le nouveau mot du jour !</p>
+    <Timer :endDate="new Date(new Date(this.endDate).getTime() + 60 * 60 * 1000)" />
+    <div class="end-container">
+      <div v-if="this.gameState === 'won'" class="end won">
+        <p class="subtitle">VICTOIRE</p>
+        <p class="showWord">Le mot était : <span>{{ word }}</span></p>
+        <p>Vous avez trouvé le mot en {{ actualLine + 1 }} {{ actualLine + 1 > 1 ? 'lignes' : 'ligne' }} !<br>Revenez demain pour le nouveau mot du jour !</p>
+      </div>
+      <div v-if="this.gameState === 'lost'" class="end lost">
+        <p class="subtitle">DEFAITE</p>
+        <p class="showWord">Le mot était : <span>{{ word }}</span></p>
+        <p>Vous n'avez pas réussi à trouver le mot !<br>Revenez demain pour une nouvelle chance avec un nouveau mot.</p>
+      </div>
     </div>
-    <div v-if="this.gameState === 'lost'" class="end lost">
-      <p class="subtitle">DEFAITE</p>
-      <p class="showWord">Le mot était : <span>{{ word }}</span></p>
-      <p>Vous n'avez pas réussi à trouver le mot !<br>Revenez demain pour une nouvelle chance avec un nouveau mot.</p>
-    </div>
-    <Grille v-if="this.gameState === 'playing'" :actualLine="actualLine" :nbLine="6" :word="word" :gameState="'playing'" @updateGameState="onUpdateGameState" @actualLineIncrease="onActualLineIncrease"></Grille>
+    <Grille v-if="this.gameState === 'playing' && loaded" :actualLine="actualLine" :nbLine="6" :word="word" :gameState="'playing'" @updateGameState="onUpdateGameState" @actualLineIncrease="onActualLineIncrease"></Grille>
     <!-- <div v-if="this.gameState === 'playing'" class="keyboard"></div> -->
   </div>
 </template>
@@ -54,8 +64,13 @@ export default {
     margin-top: 50px
   }
 
+  .end-container {
+    display: flex;
+    justify-content: center;
+  }
+
   .end {
-    width: 100%;
+    width: 30%;
     border: 5px solid #A06B9A;
     border-radius: 10px;
     margin: 10px;
