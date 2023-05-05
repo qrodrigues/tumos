@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-const url = process.env.API_URL || 'http://localhost:3000'
-console.log(process.env.API_URL);
+const url = import.meta.env.API_URL || 'http://localhost:3000'
+console.log(import.meta.env.API_URL);
 console.log(url);
 
 export default {
