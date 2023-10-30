@@ -4,8 +4,6 @@ import config from '../../config'
 
 const secretKey = config.api_secret_key
 const url = config.api_url
-console.log(secretKey);
-console.log(url);
 
 function decrypt(encryptedWord) {
   return CryptoJS.AES.decrypt(encryptedWord, secretKey).toString(
