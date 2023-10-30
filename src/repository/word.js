@@ -6,6 +6,7 @@ const secretKey = config.api_secret_key
 const url = config.api_url
 
 function decrypt(encryptedWord) {
+    console.log(secretKey);
     console.log(encryptedWord);
     console.log(CryptoJS.AES.decrypt(encryptedWord, secretKey).toString(
         CryptoJS.enc.Utf8
