@@ -4,13 +4,10 @@ import config from '../../config'
 
 const secretKey = config.api_secret_key
 const url = config.api_url
+console.log(secretKey);
+console.log(url);
 
 function decrypt(encryptedWord) {
-    console.log(secretKey);
-    console.log(encryptedWord);
-    console.log(CryptoJS.AES.decrypt(encryptedWord, secretKey).toString(
-        CryptoJS.enc.Utf8
-      ))
   return CryptoJS.AES.decrypt(encryptedWord, secretKey).toString(
     CryptoJS.enc.Utf8
   );
