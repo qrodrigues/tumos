@@ -10,7 +10,7 @@ import { faHouse } from '@fortawesome/free-solid-svg-icons'
 
 library.add(faHouse)
 
-const app = createApp(Maintenance)
+const app = createApp(App)
 app.use(router)
 .component('font-awesome-icon', FontAwesomeIcon)
 app.mount('#app')
