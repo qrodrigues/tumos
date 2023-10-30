@@ -34,19 +34,22 @@ export default {
 <template>
   <div>
     <Timer :endDate="new Date(new Date(this.endDate).getTime() + 24 * 60 * 60 * 1000)" />
-    <div v-if="this.gameState === 'won'" class="end won">
-      <p class="subtitle">VICTOIRE</p>
-      <p class="showWord">Le mot était : <span>{{ word }}</span></p>
-      <p>Vous avez trouvé le mot en {{ actualLine + 1 }} {{ actualLine + 1 > 1 ? 'lignes' : 'ligne' }} !<br>Revenez demain
-        pour le nouveau mot du jour !</p>
+    <div class="end-container">
+      <div v-if="this.gameState === 'won'" class="end won">
+        <p class="subtitle">VICTOIRE</p>
+        <p class="showWord">Le mot était : <span>{{ word }}</span></p>
+        <p>Vous avez trouvé le mot en {{ actualLine + 1 }} {{ actualLine + 1 > 1 ? 'lignes' : 'ligne' }} !<br>Revenez
+          demain
+          pour le nouveau mot du jour !</p>
+      </div>
+      <div v-if="this.gameState === 'lost'" class="end lost">
+        <p class="subtitle">DEFAITE</p>
+        <p class="showWord">Le mot était : <span>{{ word }}</span></p>
+        <p>Vous n'avez pas réussi à trouver le mot !<br>Revenez demain pour une nouvelle chance avec un nouveau mot.</p>
+      </div>
     </div>
-    <div v-if="this.gameState === 'lost'" class="end lost">
-      <p class="subtitle">DEFAITE</p>
-      <p class="showWord">Le mot était : <span>{{ word }}</span></p>
-      <p>Vous n'avez pas réussi à trouver le mot !<br>Revenez demain pour une nouvelle chance avec un nouveau mot.</p>
-    </div>
-    <Grille v-if="this.gameState === 'playing' && loaded" :actualLine="actualLine" :nbLine="6" :word="word" :gameState="'playing'"
-      @updateGameState="onUpdateGameState" @actualLineIncrease="onActualLineIncrease"></Grille>
+    <Grille v-if="this.gameState === 'playing' && loaded" :actualLine="actualLine" :nbLine="6" :word="word"
+      :gameState="'playing'" @updateGameState="onUpdateGameState" @actualLineIncrease="onActualLineIncrease"></Grille>
   </div>
 </template>
 
@@ -56,16 +59,16 @@ h1 {
 }
 
 .end-container {
-    display: flex;
-    justify-content: center;
-  }
+  display: flex;
+  justify-content: center;
+}
 
-  .end {
-    width: 30%;
-    border: 5px solid #A06B9A;
-    border-radius: 10px;
-    margin: 10px;
-  }
+.end {
+  width: 30%;
+  border: 5px solid #A06B9A;
+  border-radius: 10px;
+  margin: 10px;
+}
 
 .end .subtitle {
   color: white;
