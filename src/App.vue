@@ -15,25 +15,25 @@
     <div v-if="this.$route.path === '/'">
       <nav>
         <div class="navElement">
-          <router-link to="/quotidien">Mot du jour</router-link>
+          <router-link to="/quotidien" @mouseover="onHoverMenu" @click="onClickPlay">Mot du jour</router-link>
         </div>
         <div class="navElement">
-          <router-link to="/horaire">Mot de l'heure</router-link>
+          <router-link to="/horaire" @mouseover="onHoverMenu" @click="onClickPlay">Mot de l'heure</router-link>
         </div>
         <div class="navElement">
-          <router-link to="/minute">Mot de la minute</router-link>
+          <router-link to="/minute" @mouseover="onHoverMenu" @click="onClickPlay">Mot de la minute</router-link>
         </div>
       </nav>
       <div class="clickableButtons">
         <div class="buttons">
           <div class="buttonContainer">
-            <div class="button" @click="rules = true">Règles</div>
+            <div class="button" @mouseover="onHoverMenu" @click="rules = true; onOpenMenu()">Règles</div>
           </div>
           <div class="buttonContainer">
-            <div class="button">Paramètres</div>
+            <div class="button" @mouseover="onHoverMenu" @click="onOpenMenu">Paramètres</div>
           </div>
           <div class="buttonContainer">
-            <div class="button">Langues</div>
+            <div class="button" @mouseover="onHoverMenu" @click="onOpenMenu">Langues</div>
           </div>
         </div>
       </div>
@@ -60,6 +60,21 @@ export default {
   methods: {
     onClickCloseRules() {
       this.rules = false
+    },
+    onClickPlay () {
+      var audio = new Audio('../public/play.mp3')
+      audio.volume = 0.05;
+      audio.play();
+    },
+    onOpenMenu () {
+      var audio = new Audio('../public/menu.mp3')
+      audio.volume = 0.75;
+      audio.play();
+    },
+    onHoverMenu () {
+      var audio = new Audio('../public/hover.mp3')
+      audio.volume = 0.2;
+      audio.play();
     }
   }
 };
