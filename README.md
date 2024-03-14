@@ -4,6 +4,8 @@ Tumos is a single-player word guessing game inspired by the classic French game,
 Gameplay
 In Tumos, the player must guess a word. After each guess, the game provides feedback in the form of colored dots to indicate which letters in the guess are in the correct position and which letters are present in the word, but not in the correct position. The game ends either when the player correctly guesses the word or after eight unsuccessful attempts.
 
+# Try it on https://tumos.vercel.app/
+
 Features
 User-friendly interface with intuitive gameplay mechanics
 Technologies Used
